@@ -23,20 +23,19 @@ public class License {
     private long id;
 
     @NotEmpty
+    private String type;
+
+    @NotEmpty
     @Column(unique = true)
-    private String username;
+    private String ownername;
 
     @NotEmpty
     @JsonIgnore
     private String password;
 
-    private boolean is_accredited;
+    private boolean is_accredited = true;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_artist")
     private Artist artist;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_rule")
-    private Rule rule;
 }

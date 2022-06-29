@@ -6,5 +6,7 @@ import br.com.ifms.tads5.lp3securityspring.javabeans.License;
 
 public interface LicenseRepository extends JpaRepository<License, Long> {
     
-    License findByUsername(String name);
+    License findById(long id);
+
+    License findByOwnerName(String ownername);
 }

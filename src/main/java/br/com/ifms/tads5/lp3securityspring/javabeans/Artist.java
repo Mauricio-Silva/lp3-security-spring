@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
@@ -20,11 +21,15 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotEmpty
     private String name;
 
-    @Column(name = "email", unique = true)
+    @Column(unique = true)
     private String email;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private List<License> licenses;
+
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
+    private List<Artwork> artworks;
 }
