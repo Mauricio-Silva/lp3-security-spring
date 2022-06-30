@@ -23,13 +23,7 @@ public class ArtworkResource {
     ArtworkService artworkService;
 
 
-    @GetMapping(value = "/message")
-    public String showMessage() {
-        return "Free access to everybody!";
-    }
-
-
-    @GetMapping(value = "/listAll")
+    @GetMapping(value = "/list")
     @PreAuthorize(value = "hasRole('ADMIN')")
     public List<Artwork> listAll() {
         return artworkService.listAllArtworks();
@@ -37,13 +31,13 @@ public class ArtworkResource {
     
     
     @GetMapping(value = "/save")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     public Artwork saveArtwork(@RequestBody Artwork artwork) {
         return artworkService.saveArtwork(artwork);
     }
     
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/get")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @ResponseBody
     public Artwork getArtistById(@RequestParam long id){ 
@@ -52,22 +46,28 @@ public class ArtworkResource {
 
 
     @GetMapping(value = "/{name}")
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public Artwork getArtistByName(@PathVariable String name){ 
         return artworkService.findArtworkByName(name);
     }
     
 
     @GetMapping(value = "/delete")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     @ResponseBody
     public String deleteArtworkById(@RequestParam long id) {
-        artworkService.deleteArtwork(id);
-        return "This artwork has been deleted!";
+        if (artworkService.findArtworkById(id) != null) {
+            artworkService.deleteArtwork(id);
+            return "This artwork has been deleted!";
+        }
+        else {
+            return "There is no artwork with this id!";
+        }
     }
 
 
     @GetMapping(value = "/update")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     public Artwork updateArtwork(@RequestBody Artwork artwork) {
         return artworkService.updateArtwork(artwork);
     }

@@ -8,5 +8,5 @@ public interface LicenseRepository extends JpaRepository<License, Long> {
     
     License findById(long id);
 
-    License findByOwnerName(String ownername);
+    License findByOwnername(String ownername);
 }

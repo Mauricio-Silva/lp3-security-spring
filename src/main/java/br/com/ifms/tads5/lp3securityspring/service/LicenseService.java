@@ -42,7 +42,7 @@ public class LicenseService implements LicenseServiceInterface {
 
     @Override
     public License findLicenseByOwnerName(String ownerName) {
-        return licenseRepository.findByOwnerName(ownerName);
+        return licenseRepository.findByOwnername(ownerName);
     }
 
 

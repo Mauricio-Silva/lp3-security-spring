@@ -21,15 +21,9 @@ public class LicenseResource {
     
     @Autowired
     LicenseService licenseService;
-    
-
-    @GetMapping(value = "/message")
-    public String showMessage() {
-        return "Free access to everybody!";
-    }
 
 
-    @GetMapping(value = "/listAll")
+    @GetMapping(value = "/list")
     @PreAuthorize(value = "hasRole('ADMIN')")
     public List<License> listAll() {
         return licenseService.listAllLicenses();
@@ -37,13 +31,13 @@ public class LicenseResource {
     
     
     @GetMapping(value = "/save")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     public License saveLicense(@RequestBody License license) {
         return licenseService.saveLicense(license);
     }
     
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/get")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @ResponseBody
     public License getLicenseById(@RequestParam long id){ 
@@ -58,16 +52,21 @@ public class LicenseResource {
     
 
     @GetMapping(value = "/delete")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     @ResponseBody
     public String deleteLicenseById(@RequestParam long id) {
-        licenseService.deleteLicense(id);
-        return "This license has been deleted!";
+        if (licenseService.findLicenseById(id) != null) {
+            licenseService.deleteLicense(id);
+            return "This license has been deleted!";
+        }
+        else {
+            return "There is no license with this id!";
+        }
     }
 
 
     @GetMapping(value = "/update")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     public License updateLicense(@RequestBody License license) {
         return licenseService.updateLicense(license);
     }

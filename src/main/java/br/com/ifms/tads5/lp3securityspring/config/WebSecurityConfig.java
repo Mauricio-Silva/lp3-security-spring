@@ -20,11 +20,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .inMemoryAuthentication()
         .withUser("Mauricio")
         .password("123")
-        .roles("ARTIST")
+        .roles("USER")
         .and()
         .withUser("Marcio")
         .password("456")
-        .roles("ADMIN");
+        .roles("USER", "ADMIN");
     }
 
 
@@ -40,20 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+
         // http
         // .authorizeHttpRequests()
         // .antMatchers("/")
-        // .permitAll()
-        // .and()
-        // .httpBasic()
-        // .and()
-        // .authorizeRequests()
-        // .antMatchers("/message**")
-        // .hasRole("ADMIN")
-        // .and()
-        // .authorizeRequests()
-        // .antMatchers("/admin**")
-        // .hasRole("ADMIN");
+        // .permitAll();
     }
 
 

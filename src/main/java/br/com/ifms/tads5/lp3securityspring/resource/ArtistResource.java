@@ -20,15 +20,9 @@ public class ArtistResource {
 
     @Autowired
     ArtistService artistService;
-
-
-    @GetMapping(value = "/message")
-    public String showMessage() {
-        return "Free access to everybody!";
-    }
     
 
-    @GetMapping(value = "/listAll")
+    @GetMapping(value = "/list")
     @PreAuthorize(value = "hasRole('ADMIN')")
     public List<Artist> listAll() {
         return artistService.listAllArtists();
@@ -36,13 +30,13 @@ public class ArtistResource {
 
 
     @GetMapping(value = "/save")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     public Artist saveArtist(@RequestBody Artist artist) {
         return artistService.saveArtist(artist);
     }
 
     
-    @GetMapping(value = "/")
+    @GetMapping(value = "/get")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @ResponseBody
     public Artist getArtistById(@RequestParam long id){ 
@@ -51,16 +45,21 @@ public class ArtistResource {
 
 
     @GetMapping(value = "/delete")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     @ResponseBody
     public String deleteArtistById(@RequestParam long id) {
-        artistService.deleteArtist(id);
-        return "This artist has been deleted!";
+        if (artistService.findArtistById(id) != null) {
+            artistService.deleteArtist(id);
+            return "This artist has been deleted!";
+        }
+        else {
+            return "There is no artist with this id!";
+        }
     }
 
 
     @GetMapping(value ="/update")
-    @PreAuthorize(value = "hasRole('ARTIST', 'ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     public Artist updateArtist(@RequestBody Artist artist) {
         return artistService.updateArtist(artist);
     }
